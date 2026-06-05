@@ -1,0 +1,146 @@
+[gd_scene load_steps=17 format=3 uid="uid://phase1drivingtest"]
+
+[ext_resource type="Script" path="res://scripts/truck_controller.gd" id="1_truck"]
+[ext_resource type="Script" path="res://scripts/follow_camera.gd" id="2_camera"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ground"]
+albedo_color = Color(0.22, 0.29, 0.24, 1)
+roughness = 0.85
+
+[sub_resource type="PlaneMesh" id="Plane_ground"]
+size = Vector2(90, 90)
+
+[sub_resource type="BoxShape3D" id="Shape_ground"]
+size = Vector3(90, 0.2, 90)
+
+[sub_resource type="StandardMaterial3D" id="Mat_road"]
+albedo_color = Color(0.12, 0.13, 0.13, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="Mesh_road"]
+size = Vector3(12, 0.06, 70)
+
+[sub_resource type="StandardMaterial3D" id="Mat_truck_body"]
+albedo_color = Color(0.78, 0.18, 0.1, 1)
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="Mesh_truck_body"]
+size = Vector3(2.3, 1.1, 4.3)
+
+[sub_resource type="StandardMaterial3D" id="Mat_truck_cab"]
+albedo_color = Color(0.93, 0.66, 0.24, 1)
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="Mesh_truck_cab"]
+size = Vector3(2.1, 1.2, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="Mat_window"]
+albedo_color = Color(0.45, 0.72, 0.86, 1)
+roughness = 0.25
+
+[sub_resource type="BoxMesh" id="Mesh_window"]
+size = Vector3(1.5, 0.45, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wheel"]
+albedo_color = Color(0.03, 0.03, 0.03, 1)
+roughness = 0.7
+
+[sub_resource type="CylinderMesh" id="Mesh_wheel"]
+height = 0.32
+radius = 0.36
+
+[sub_resource type="BoxShape3D" id="Shape_truck"]
+size = Vector3(2.35, 1.3, 4.4)
+
+[node name="DrivingTest" type="Node3D"]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 8, 0)
+light_energy = 2.5
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Plane_ground")
+surface_material_override/0 = SubResource("Mat_ground")
+
+[node name="GroundCollision" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("Shape_ground")
+
+[node name="Road" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 0)
+mesh = SubResource("Mesh_road")
+surface_material_override/0 = SubResource("Mat_road")
+
+[node name="Truck" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 24)
+script = ExtResource("1_truck")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Truck"]
+shape = SubResource("Shape_truck")
+
+[node name="Body" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.35)
+mesh = SubResource("Mesh_truck_body")
+surface_material_override/0 = SubResource("Mat_truck_body")
+
+[node name="Cab" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.85)
+mesh = SubResource("Mesh_truck_cab")
+surface_material_override/0 = SubResource("Mat_truck_cab")
+
+[node name="FrontWindow" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -2.61)
+mesh = SubResource("Mesh_window")
+surface_material_override/0 = SubResource("Mat_window")
+
+[node name="WheelFrontLeft" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.25, -0.5, -1.35)
+mesh = SubResource("Mesh_wheel")
+surface_material_override/0 = SubResource("Mat_wheel")
+
+[node name="WheelFrontRight" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.25, -0.5, -1.35)
+mesh = SubResource("Mesh_wheel")
+surface_material_override/0 = SubResource("Mat_wheel")
+
+[node name="WheelRearLeft" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.25, -0.5, 1.55)
+mesh = SubResource("Mesh_wheel")
+surface_material_override/0 = SubResource("Mat_wheel")
+
+[node name="WheelRearRight" type="MeshInstance3D" parent="Truck"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.25, -0.5, 1.55)
+mesh = SubResource("Mesh_wheel")
+surface_material_override/0 = SubResource("Mat_wheel")
+
+[node name="CameraRig" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.913812, 0.406138, 0, -0.406138, 0.913812, 0, 4.8, 33)
+script = ExtResource("2_camera")
+target_path = NodePath("../Truck")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+current = true
+fov = 65.0
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
+truck_path = NodePath("../Truck")
+
+[node name="SpeedLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 240.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 24
+text = "Speed: 000 km/h"
+
+[node name="HelpLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 58.0
+offset_right = 520.0
+offset_bottom = 92.0
+theme_override_font_sizes/font_size = 16
+text = "WASD or arrows to drive. R resets the truck."

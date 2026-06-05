@@ -8,6 +8,8 @@ Thumbs.db
 *.log
 tmp/
 temp/
+downloads/
+tools/
 
 # Local builds and exports
 builds/
@@ -24,4 +26,3 @@ assets/source/
 # Blender backups
 *.blend1
 *.blend2
-

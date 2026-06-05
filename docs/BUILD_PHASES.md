@@ -112,7 +112,15 @@ Make a truck move, steer, stop, reverse, and reset in a small test area.
 
 ### Done When
 
-- The truck can drive around a test area for five minutes without breaking the session.
+- [x] Godot 4.x is available for the prototype.
+- [x] The prototype project exists.
+- [x] One simple placeholder truck exists.
+- [x] A flat road and test area exist.
+- [x] Keyboard steering, throttle, brake, and reverse exist.
+- [x] A reset vehicle control exists.
+- [x] A follow camera exists.
+- [x] A basic speed display exists.
+- [ ] The truck can drive around a test area for five minutes without breaking the session.
 
 ## Phase 2: First Delivery Loop
 
@@ -691,4 +699,3 @@ Start with Phase 1:
 6. Add a follow camera.
 
 Once the truck feels good enough, move to Phase 2 and build the first delivery loop.
-
