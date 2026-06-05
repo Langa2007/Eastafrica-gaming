@@ -165,7 +165,7 @@ Suggested files:
 
 ### Done When
 
-- A player can choose a job, drive to the destination, deliver cargo, earn money, and return to the job board.
+- [x] A player can choose a job, drive to the destination, deliver cargo, earn money, and return to the job board.
 
 ## Phase 3: Light Route Variety
 

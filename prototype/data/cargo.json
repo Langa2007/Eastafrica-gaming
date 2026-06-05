@@ -1,0 +1,10 @@
+{
+	"cargo": [
+		{
+			"id": "dry_goods",
+			"name": "Dry Goods",
+			"weight_tons": 8.0,
+			"fragility": "Low"
+		}
+	]
+}

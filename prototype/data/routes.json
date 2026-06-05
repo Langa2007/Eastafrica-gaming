@@ -1,0 +1,12 @@
+{
+	"routes": [
+		{
+			"id": "nairobi_depot_to_industrial_yard",
+			"name": "Nairobi Depot to Industrial Yard",
+			"origin": "Nairobi Depot",
+			"destination": "Industrial Yard",
+			"distance_km": 3.2,
+			"payout": 750
+		}
+	]
+}

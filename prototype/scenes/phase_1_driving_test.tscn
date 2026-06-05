@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://phase1drivingtest"]
+[gd_scene load_steps=22 format=3 uid="uid://phase1drivingtest"]
 
 [ext_resource type="Script" path="res://scripts/truck_controller.gd" id="1_truck"]
 [ext_resource type="Script" path="res://scripts/follow_camera.gd" id="2_camera"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
+[ext_resource type="Script" path="res://scripts/delivery_manager.gd" id="4_delivery"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_ground"]
 albedo_color = Color(0.22, 0.29, 0.24, 1)
@@ -53,7 +54,25 @@ radius = 0.36
 [sub_resource type="BoxShape3D" id="Shape_truck"]
 size = Vector3(2.35, 1.3, 4.4)
 
+[sub_resource type="StandardMaterial3D" id="Mat_depot"]
+albedo_color = Color(0.08, 0.62, 0.26, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Mat_destination"]
+albedo_color = Color(0.1, 0.4, 0.85, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="Mesh_zone_marker"]
+size = Vector3(7, 0.08, 7)
+
+[sub_resource type="BoxShape3D" id="Shape_delivery_trigger"]
+size = Vector3(7, 2, 7)
+
 [node name="DrivingTest" type="Node3D"]
+script = ExtResource("4_delivery")
+truck_path = NodePath("Truck")
+pickup_marker_path = NodePath("DepotPickup")
+delivery_marker_path = NodePath("DeliveryDestination")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 8, 0)
@@ -116,6 +135,36 @@ transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.25, 
 mesh = SubResource("Mesh_wheel")
 surface_material_override/0 = SubResource("Mat_wheel")
 
+[node name="DepotPickup" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 19)
+
+[node name="DepotMarker" type="MeshInstance3D" parent="DepotPickup"]
+mesh = SubResource("Mesh_zone_marker")
+surface_material_override/0 = SubResource("Mat_depot")
+
+[node name="DepotCollision" type="CollisionShape3D" parent="DepotPickup"]
+shape = SubResource("Shape_delivery_trigger")
+
+[node name="DepotLabel" type="Label3D" parent="DepotPickup"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 1.2, 0)
+billboard = 1
+text = "PICKUP"
+
+[node name="DeliveryDestination" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, -23)
+
+[node name="DestinationMarker" type="MeshInstance3D" parent="DeliveryDestination"]
+mesh = SubResource("Mesh_zone_marker")
+surface_material_override/0 = SubResource("Mat_destination")
+
+[node name="DestinationCollision" type="CollisionShape3D" parent="DeliveryDestination"]
+shape = SubResource("Shape_delivery_trigger")
+
+[node name="DestinationLabel" type="Label3D" parent="DeliveryDestination"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 1.2, 0)
+billboard = 1
+text = "DELIVER"
+
 [node name="CameraRig" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.913812, 0.406138, 0, -0.406138, 0.913812, 0, 4.8, 33)
 script = ExtResource("2_camera")
@@ -144,3 +193,68 @@ offset_right = 520.0
 offset_bottom = 92.0
 theme_override_font_sizes/font_size = 16
 text = "WASD or arrows to drive. R resets the truck."
+
+[node name="MoneyLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 94.0
+offset_right = 280.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 20
+text = "Money: KES 0"
+
+[node name="ObjectiveLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 126.0
+offset_right = 560.0
+offset_bottom = 158.0
+theme_override_font_sizes/font_size = 18
+text = "Choose a job from the board."
+
+[node name="JobBoard" type="PanelContainer" parent="HUD"]
+offset_left = 24.0
+offset_top = 168.0
+offset_right = 390.0
+offset_bottom = 360.0
+
+[node name="VBox" type="VBoxContainer" parent="HUD/JobBoard"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 359.0
+offset_bottom = 185.0
+
+[node name="JobTitleLabel" type="Label" parent="HUD/JobBoard/VBox"]
+theme_override_font_sizes/font_size = 18
+text = "Delivery Job"
+
+[node name="JobDetailLabel" type="Label" parent="HUD/JobBoard/VBox"]
+text = "Depot to destination
+Cargo: General Cargo
+Distance: 0.0 km
+Payout: KES 0"
+
+[node name="AcceptButton" type="Button" parent="HUD/JobBoard/VBox"]
+text = "Accept Job"
+
+[node name="ResultPanel" type="PanelContainer" parent="HUD"]
+visible = false
+offset_left = 430.0
+offset_top = 168.0
+offset_right = 790.0
+offset_bottom = 330.0
+
+[node name="VBox" type="VBoxContainer" parent="HUD/ResultPanel"]
+offset_left = 7.0
+offset_top = 7.0
+offset_right = 353.0
+offset_bottom = 155.0
+
+[node name="ResultTitleLabel" type="Label" parent="HUD/ResultPanel/VBox"]
+theme_override_font_sizes/font_size = 22
+text = "Delivery Complete"
+
+[node name="ResultDetailLabel" type="Label" parent="HUD/ResultPanel/VBox"]
+text = "Cargo delivered.
+Paid KES 0."
+
+[node name="ReturnButton" type="Button" parent="HUD/ResultPanel/VBox"]
+text = "Return to Job Board"
