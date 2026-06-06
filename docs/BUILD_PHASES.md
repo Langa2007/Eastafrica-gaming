@@ -179,12 +179,12 @@ Make routes feel different without building a huge open world.
 
 ### Scope
 
-- Paved route.
-- Dirt route.
-- Hill section.
-- Tight city-style turn.
-- Simple roadside props.
-- Basic route arrow or minimap placeholder.
+- [x] Paved route.
+- [x] Dirt route.
+- [x] Hill section.
+- [x] Tight city-style turn.
+- [x] Simple roadside props.
+- [x] Basic route arrow or minimap placeholder.
 
 ### Tech Stack
 
@@ -210,7 +210,14 @@ Make routes feel different without building a huge open world.
 
 ### Done When
 
-- The player can feel the difference between paved, rough, and hilly routes.
+- [x] The player can feel the difference between paved, rough, and hilly routes.
+
+### Build Notes
+
+- Added a small route-variety environment to the Godot prototype with paved, dirt, hill, and tight-turn sections.
+- Added lightweight roadside props, curb markers, route labels, and ground arrows.
+- Added HUD route guidance plus current surface feedback.
+- Added basic handling differences for paved road, dirt route, hill climb, and tight city turn.
 
 ## Phase 4: Basic Trucking Pressure
 
